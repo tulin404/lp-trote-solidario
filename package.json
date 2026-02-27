@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
     "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
     "build": "npm run build:css"
   },
