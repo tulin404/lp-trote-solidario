@@ -1,0 +1,26 @@
+{
+  "name": "lp-trote-solidario",
+  "version": "1.0.0",
+  "description": "Landing Page feita para o Trote Solidário da Uni-FACEF.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "build": "npm run build:css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tulin404/lp-trote-solidario.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tulin404/lp-trote-solidario/issues"
+  },
+  "homepage": "https://github.com/tulin404/lp-trote-solidario#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}
