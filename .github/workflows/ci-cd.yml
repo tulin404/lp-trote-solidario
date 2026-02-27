@@ -1,55 +1,64 @@
-name: CI/CD
+name: CI + CD (GitHub Pages)
 
 on:
   push:
     branches: [main]
-  pull_request:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+
+  ci:
+    name: CI (Build)
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      # GET CODE
+      - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build CSS
-        run: npm run build
+        run: npm run build:css
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-build
-          path: dist
+        # JUST IN CASE
+      - name: Prepare deploy folder
+        run: |
+         mkdir deploy
+         cp index.html deploy/
+         cp -r dist deploy/
+         cp -r public deploy/
 
-  deploy:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
+        #  DEBUG (check artifact for correct linking)
+      - name: List deploy folder
+        run: |
+          ls -R deploy
 
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: production-build
-          path: dist
 
-      - name: Upload to Pages
+      # ARTIFACT
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+            path: deploy
 
-      - name: Deploy
+  cd:
+    name: CD (Deploy to Pages)
+    needs: ci
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
